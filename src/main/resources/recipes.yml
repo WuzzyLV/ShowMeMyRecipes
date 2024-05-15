@@ -1,0 +1,15 @@
+
+recipes:
+  crafting_table:
+    wooden_dagger:
+      permission: itemsadder.wooden_dagger
+      pattern:
+        - XXX
+        - XRX
+        - XSX
+      ingredients:
+        R: OAK_PLANKS
+        S: STICK
+      result:
+        item: daggers:wooden_dagger
+        amount: 1
