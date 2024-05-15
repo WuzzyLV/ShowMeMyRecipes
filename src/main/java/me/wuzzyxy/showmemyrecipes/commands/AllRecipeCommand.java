@@ -1,5 +1,6 @@
 package me.wuzzyxy.showmemyrecipes.commands;
 
+import me.wuzzyxy.showmemyrecipes.RecipeManager;
 import me.wuzzyxy.showmemyrecipes.ShowMeMyRecipes;
 import me.wuzzyxy.showmemyrecipes.inventory.RecipeView;
 import net.md_5.bungee.api.ChatColor;
@@ -21,9 +22,11 @@ import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 
 public class AllRecipeCommand implements CommandExecutor {
     private final ShowMeMyRecipes plugin;
+    private final RecipeManager recipeManager;
 
-    public AllRecipeCommand(ShowMeMyRecipes plugin) {
+    public AllRecipeCommand(ShowMeMyRecipes plugin, RecipeManager recipeManager) {
         this.plugin = plugin;
+        this.recipeManager = recipeManager;
         plugin.getCommand("recipes").setExecutor(this);
     }
 
@@ -35,7 +38,7 @@ public class AllRecipeCommand implements CommandExecutor {
         }
         Player player = (Player) commandSender;
 
-        new RecipeView(plugin).openInventory(player);
+        new RecipeView(plugin, recipeManager).openInventory(player);
 
         return false;
     }
