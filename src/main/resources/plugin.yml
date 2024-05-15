@@ -1,0 +1,9 @@
+name: ShowMeMyRecipes
+version: '${version}'
+main: me.wuzzyxy.showmemyrecipes.ShowMeMyRecipes
+api-version: '1.19'
+
+commands:
+  recipes:
+    description: Show the recipes for the item in your hand
+    usage: /recipes
