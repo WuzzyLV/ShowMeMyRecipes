@@ -3,6 +3,7 @@ package me.wuzzyxy.showmemyrecipes.inventory;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
+import me.wuzzyxy.showmemyrecipes.PluginConfig;
 import me.wuzzyxy.showmemyrecipes.RecipeManager;
 import me.wuzzyxy.showmemyrecipes.ShowMeMyRecipes;
 import me.wuzzyxy.showmemyrecipes.recipes.CustomRecipe;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class RecipeView implements Listener {
     private final ShowMeMyRecipes plugin;
+    private final PluginConfig config;
     private final RecipeManager recipeManager;
     private Inventory inv;
     private TexturedInventoryWrapper wrapper;
@@ -34,12 +36,12 @@ public class RecipeView implements Listener {
 
     public RecipeView(ShowMeMyRecipes plugin, RecipeManager recipeManager, Player owner) {
         this.plugin = plugin;
+        config = plugin.getPluginConfig();
         this.recipeManager = recipeManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
         availableItems = new ArrayList<>();
         recipeManager.getRecipes().forEach((key, recipe) -> {
-            plugin.getLogger().info("Checking permission for " + key);
             if (owner.hasPermission(recipe.getPermission())) {
                 availableItems.add(key);
             }
@@ -54,10 +56,10 @@ public class RecipeView implements Listener {
         if (e.getInventory() != inv) return;
         e.setCancelled(true);
 
-        if (e.getSlot() == 0){
+        if (e.getSlot() == config.GUI_LEFT_ARROW_SLOT){
             currentItem--;
             if (currentItem < 0) currentItem = availableItems.size() - 1;
-        } else if (e.getSlot() == 8){
+        } else if (e.getSlot() == config.GUI_RIGHT_ARROW_SLOT){
             currentItem++;
             if (currentItem >= availableItems.size()) currentItem = 0;
         }
@@ -77,24 +79,24 @@ public class RecipeView implements Listener {
             for (int j = 0; j < 3; j++) {
                 ItemStack item = recipe.getRecipe()[i][j];
                 if (item == null) inv.setItem((i * 9 + j + 10) + 9, null);
-                inv.setItem((i * 9 + j + 10) + 9, item);
+                inv.setItem((i * 9 + j + 10), item);
             }
         }
         ItemStack result = recipe.getResult();
-        inv.setItem(34, result);
+        inv.setItem(25, result);
     }
 
     public void initInv(){
         wrapper = new TexturedInventoryWrapper(null,
-                54,
-                ChatColor.BLACK + "Recipe book",
-                new FontImageWrapper("_iainternal:crafting"),
-                16,
-                -8
+                config.GUI_INV_SIZE,
+                ChatColor.translateAlternateColorCodes('&', config.GUI_TITLE),
+                new FontImageWrapper(config.GUI_NAMESPACE_ID),
+                config.GUI_TITLE_OFFSET,
+                config.GUI_TEXTURE_OFFSET
         );
         inv = wrapper.getInternal();
 
-        inv.setItem(0, CustomStack.getInstance("_iainternal:icon_left_blue").getItemStack());
-        inv.setItem(8, CustomStack.getInstance("_iainternal:icon_right_blue").getItemStack());
+        inv.setItem(config.GUI_LEFT_ARROW_SLOT, CustomStack.getInstance(config.GUI_LEFT_ARROW).getItemStack());
+        inv.setItem(config.GUI_RIGHT_ARROW_SLOT, CustomStack.getInstance(config.GUI_RIGHT_ARROW).getItemStack());
     }
 }

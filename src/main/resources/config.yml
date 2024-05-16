@@ -1,0 +1,12 @@
+gui:
+  namespace_id: "_iainternal:crafting"
+  texture_offset: -8
+  inv_size: 54
+  title: "&8Recipe Book"
+  title_offset: 16
+  left_arrow:
+    slot: 0
+    texture: "_iainternal:icon_left_blue"
+  right_arrow:
+    slot: 8
+    texture: "_iainternal:icon_right_blue"
