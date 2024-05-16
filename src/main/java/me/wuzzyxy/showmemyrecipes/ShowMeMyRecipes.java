@@ -9,7 +9,6 @@ public final class ShowMeMyRecipes extends JavaPlugin {
     public void onEnable() {
         new AllRecipeCommand(this, new RecipeManager(this));
 
-
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeManager {
     ShowMeMyRecipes plugin;
@@ -26,6 +27,7 @@ public class RecipeManager {
     public RecipeManager(ShowMeMyRecipes plugin) {
         this.plugin = plugin;
         loadConfig();
+        loadItems();
 //        String tempName = "daggers:wooden_dagger";
 //        CustomStack stack = CustomStack.getInstance(tempName);
 //
@@ -45,12 +47,28 @@ public class RecipeManager {
 //
 //        recipes.put(tempName, recipe);
 
-        ConfigurationSection recipes = recipeConfig.createSection("recipes.crafting_table");
+
+    }
+
+    private void loadConfig(){
+        File configFile = new File(plugin.getDataFolder(), "recipes.yml");
+        if (!configFile.exists()) {
+            configFile.getParentFile().mkdirs();
+            plugin.saveResource("recipes.yml", false);
+        }
+
+        recipeConfig = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    private void loadItems(){
+        ConfigurationSection recipes = recipeConfig.getConfigurationSection("recipes.crafting_table");
 
         for (String key : recipes.getKeys(false)) {
+            plugin.getLogger().severe(key);
             ConfigurationSection recipe = recipes.getConfigurationSection(key);
             String[][] pattern = new String[3][3];
             List<String> patternCfg = recipe.getStringList("pattern");
+            plugin.getLogger().severe(patternCfg.toString());
             for (int i = 0; i < 3; i++) {
                 pattern[i] = patternCfg.get(i).split("");
                 // if is X then set to null
@@ -63,33 +81,35 @@ public class RecipeManager {
             HashMap<String, ItemStack> ingredients = new HashMap<>();
             ConfigurationSection ingredientsSection = recipe.getConfigurationSection("ingredients");
             for (String ingredient : ingredientsSection.getKeys(false)) {
-                ingredients.put(ingredient, new ItemStack(Material.getMaterial(ingredientsSection.getString(ingredient))));
+                String itemName = ingredientsSection.getString(ingredient);
+                ItemStack item;
+                if (itemName.contains(":")) {
+                    item = CustomStack.getInstance(itemName).getItemStack();
+                } else {
+                    item = new ItemStack(
+                            Material.getMaterial(itemName)
+                    );
+                }
+                ingredients.put(ingredient, new ItemStack(item));
             }
-            ItemStack result = new ItemStack(Material.getMaterial(recipe.getString("result")));
-            CustomRecipe customRecipe = new CustomRecipe(name, shape, ingredients, result);
-            this.recipes.put(name, customRecipe);
+            String resultItem = recipe.getString("result.item");
+            int resultAmount = recipe.getInt("result.amount");
+            ItemStack result;
+            if (resultItem.contains(":")) {
+                CustomStack stack = CustomStack.getInstance(resultItem);
+                result = stack.getItemStack();
+            } else {
+                result = new ItemStack(
+                        Objects.requireNonNull(
+                                Material.getMaterial(resultItem.toUpperCase())
+                        ),
+                        resultAmount
+                );
+            }
+            CustomRecipe customRecipe = new CustomRecipe(key, pattern, ingredients, result);
+            this.recipes.put(key, customRecipe);
+            plugin.getLogger().info("Loaded recipe: " + key);
         }
-
-    }
-
-    private void loadConfig(){
-        File configFile = new File(plugin.getDataFolder(), "recipes.yml");
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            plugin.saveResource("recipes.yml", false);
-        }
-
-        recipeConfig = YamlConfiguration.loadConfiguration(configFile);
-//        YamlConfiguration.loadConfiguration(configFile);
-//        try {
-//            recipeConfig.load(configFile);
-//        } catch (IOException | InvalidConfigurationException e) {
-//            e.printStackTrace();
-//        }
-        /* User Edit:
-            Instead of the above Try/Catch, you can also use
-            YamlConfiguration.loadConfiguration(customConfigFile)
-        */
     }
 
     public HashMap<String, CustomRecipe> getRecipes() {

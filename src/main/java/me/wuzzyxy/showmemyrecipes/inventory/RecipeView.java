@@ -40,8 +40,6 @@ public class RecipeView implements Listener {
 
         inv = wrapper.getInternal();
 
-        inv.addItem(new ItemStack(Material.DIAMOND));
-
         recipeManager.getRecipes().forEach((key, recipe) -> {
             recipe.getRecipe();
 
