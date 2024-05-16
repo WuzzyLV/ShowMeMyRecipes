@@ -13,14 +13,11 @@ import org.bukkit.inventory.ShapedRecipe;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class RecipeManager {
     ShowMeMyRecipes plugin;
-    HashMap<String, CustomRecipe> recipes = new HashMap<>();
+    HashMap<String, CustomRecipe> recipes = new LinkedHashMap<>();
 
     FileConfiguration recipeConfig;
 
@@ -28,25 +25,6 @@ public class RecipeManager {
         this.plugin = plugin;
         loadConfig();
         loadItems();
-//        String tempName = "daggers:wooden_dagger";
-//        CustomStack stack = CustomStack.getInstance(tempName);
-//
-//        CustomRecipe recipe = new CustomRecipe(
-//                tempName,
-//                new String[][]{
-//                        {null, null, null},
-//                        {null, "W", null},
-//                        {null, "S", null}
-//                },
-//                new HashMap<>() {{
-//                    put("W", new ItemStack(Material.OAK_PLANKS));
-//                    put("S", new ItemStack(Material.STICK));
-//                }},
-//                stack.getItemStack()
-//        );
-//
-//        recipes.put(tempName, recipe);
-
 
     }
 
@@ -106,7 +84,8 @@ public class RecipeManager {
                         resultAmount
                 );
             }
-            CustomRecipe customRecipe = new CustomRecipe(key, pattern, ingredients, result);
+            String permission = recipe.getString("permission");
+            CustomRecipe customRecipe = new CustomRecipe(key, permission, pattern, ingredients, result);
             this.recipes.put(key, customRecipe);
             plugin.getLogger().info("Loaded recipe: " + key);
         }

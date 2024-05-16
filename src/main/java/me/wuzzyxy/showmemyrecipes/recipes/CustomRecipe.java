@@ -8,9 +8,11 @@ public class CustomRecipe {
     private final String name;
     private final ItemStack[][] recipe;
     private final ItemStack result;
+    private final String permission;
 
-    public CustomRecipe(String name, String[][] shape, HashMap<String, ItemStack> ingredients, ItemStack result) {
+    public CustomRecipe(String name, String permission, String[][] shape, HashMap<String, ItemStack> ingredients, ItemStack result) {
         this.name = name;
+        this.permission = permission;
         if (shape.length != 3) throw new IllegalArgumentException("Shape must be 3x3");
         if (shape[0].length != 3 || shape[1].length != 3 || shape[2].length != 3) throw new IllegalArgumentException("Shape must be 3x3");
 
@@ -36,5 +38,9 @@ public class CustomRecipe {
 
     public ItemStack getResult() {
         return result;
+    }
+
+    public String getPermission() {
+        return permission;
     }
 }

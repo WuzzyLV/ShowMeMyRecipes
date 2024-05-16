@@ -38,7 +38,7 @@ public class AllRecipeCommand implements CommandExecutor {
         }
         Player player = (Player) commandSender;
 
-        new RecipeView(plugin, recipeManager).openInventory(player);
+        new RecipeView(plugin, recipeManager, player).openInventory(player);
 
         return false;
     }
