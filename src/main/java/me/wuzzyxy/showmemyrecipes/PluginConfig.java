@@ -14,6 +14,8 @@ public class PluginConfig {
         GUI_INV_SIZE = plugin.getConfig().getInt("gui.inv_size", 54);
         GUI_TITLE = plugin.getConfig().getString("gui.title", "&8Recipe book");
         GUI_TITLE_OFFSET = plugin.getConfig().getInt("gui.title_offset", 16);
+        GUI_CLOSE_TEXTURE = plugin.getConfig().getString("gui.close_button.texture", "_iainternal:icon_cancel");
+        GUI_CLOSE_SLOT = plugin.getConfig().getInt("gui.close_button.slot", 4);
     }
 
     public final String GUI_NAMESPACE_ID;
@@ -22,6 +24,8 @@ public class PluginConfig {
     public final int GUI_LEFT_ARROW_SLOT;
     public final String GUI_RIGHT_ARROW;
     public final int GUI_RIGHT_ARROW_SLOT;
+    public final String GUI_CLOSE_TEXTURE;
+    public final int GUI_CLOSE_SLOT;
     public final int GUI_INV_SIZE;
     public final String GUI_TITLE;
     public final int GUI_TITLE_OFFSET;

@@ -10,3 +10,6 @@ gui:
   right_arrow:
     slot: 8
     texture: "_iainternal:icon_right_blue"
+  close_button:
+    slot: 4
+    texture: "_iainternal:icon_cancel"

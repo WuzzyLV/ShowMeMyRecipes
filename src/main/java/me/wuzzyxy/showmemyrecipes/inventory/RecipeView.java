@@ -62,6 +62,11 @@ public class RecipeView implements Listener {
         } else if (e.getSlot() == config.GUI_RIGHT_ARROW_SLOT){
             currentItem++;
             if (currentItem >= availableItems.size()) currentItem = 0;
+        } else if (e.getSlot() == config.GUI_CLOSE_SLOT){
+            e.getWhoClicked().closeInventory();
+            return;
+        } else {
+            return;
         }
         displayItem(currentItem);
     }
@@ -98,5 +103,6 @@ public class RecipeView implements Listener {
 
         inv.setItem(config.GUI_LEFT_ARROW_SLOT, CustomStack.getInstance(config.GUI_LEFT_ARROW).getItemStack());
         inv.setItem(config.GUI_RIGHT_ARROW_SLOT, CustomStack.getInstance(config.GUI_RIGHT_ARROW).getItemStack());
+        inv.setItem(config.GUI_CLOSE_SLOT, CustomStack.getInstance(config.GUI_CLOSE_TEXTURE).getItemStack());
     }
 }
