@@ -1,7 +1,9 @@
 package me.wuzzyxy.showmemyrecipes;
 
-import dev.lone.itemsadder.api.CustomStack;
+import io.th0rgal.oraxen.api.OraxenItems;
+import io.th0rgal.oraxen.items.ItemBuilder;
 import me.wuzzyxy.showmemyrecipes.recipes.CustomRecipe;
+import me.wuzzyxy.showmemyrecipes.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.io.File;
-import java.io.IOException;
+
 import java.util.*;
 
 public class RecipeManager {
@@ -23,9 +25,13 @@ public class RecipeManager {
 
     public RecipeManager(ShowMeMyRecipes plugin) {
         this.plugin = plugin;
+        reloadConfig();
+
+    }
+
+    public void reloadConfig() {
         loadConfig();
         loadItems();
-
     }
 
     private void loadConfig(){
@@ -60,31 +66,13 @@ public class RecipeManager {
             ConfigurationSection ingredientsSection = recipe.getConfigurationSection("ingredients");
             for (String ingredient : ingredientsSection.getKeys(false)) {
                 String itemName = ingredientsSection.getString(ingredient);
-                ItemStack item;
-                if (itemName.contains(":")) {
-                    item = CustomStack.getInstance(itemName).getItemStack();
-                } else {
-                    item = new ItemStack(
-                            Material.getMaterial(itemName)
-                    );
-                }
-                ingredients.put(ingredient, new ItemStack(item));
+                ingredients.put(ingredient, ItemUtils.getItemByName(itemName));
             }
             String resultItem = recipe.getString("result.item");
             int resultAmount = recipe.getInt("result.amount");
-            ItemStack result;
-            if (resultItem.contains(":")) {
-                CustomStack stack = CustomStack.getInstance(resultItem);
-                result = stack.getItemStack();
-            } else {
-                result = new ItemStack(
-                        Objects.requireNonNull(
-                                Material.getMaterial(resultItem.toUpperCase())
-                        ),
-                        resultAmount
-                );
-            }
             String permission = recipe.getString("permission");
+            ItemStack result = ItemUtils.getItemByName(resultItem, recipe.getString("result.name"), recipe.getStringList("result.lore"));
+            result.setAmount(resultAmount);
             CustomRecipe customRecipe = new CustomRecipe(key, permission, pattern, ingredients, result);
             this.recipes.put(key, customRecipe);
             plugin.getLogger().info("Loaded recipe: " + key);

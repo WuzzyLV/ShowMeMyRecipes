@@ -15,8 +15,6 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
-import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 
 
 
@@ -32,6 +30,20 @@ public class AllRecipeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        if (strings.length>0) {
+            if (strings[0].equalsIgnoreCase("reload")) {
+                if (!commandSender.hasPermission("showmemyrecipes.reload")) {
+                    commandSender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                    return true;
+                }
+                recipeManager.reloadConfig();
+                plugin.reloadPluginConfig();
+
+                commandSender.sendMessage(ChatColor.GREEN + "Recipes reloaded!");
+                return true;
+            }
+        };
+
         if (!(commandSender instanceof Player)){
             commandSender.sendMessage("You must be a player to use this command!");
             return true;
@@ -40,7 +52,7 @@ public class AllRecipeCommand implements CommandExecutor {
 
         new RecipeView(plugin, recipeManager, player).openInventory(player);
 
-        return false;
+        return true;
     }
 
 

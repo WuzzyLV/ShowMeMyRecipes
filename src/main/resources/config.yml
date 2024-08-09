@@ -1,15 +1,15 @@
-gui:
-  namespace_id: "_iainternal:crafting"
+ gui:
+  namespace_id: "crafting"
   texture_offset: -8
   inv_size: 54
   title: "&8Recipe Book"
   title_offset: 16
   left_arrow:
     slot: 0
-    texture: "_iainternal:icon_left_blue"
+    texture: "oraxen:left_arrow"
   right_arrow:
     slot: 8
-    texture: "_iainternal:icon_right_blue"
+    texture: "oraxen:right_arrow"
   close_button:
     slot: 4
-    texture: "_iainternal:icon_cancel"
+    texture: "BARRIER"

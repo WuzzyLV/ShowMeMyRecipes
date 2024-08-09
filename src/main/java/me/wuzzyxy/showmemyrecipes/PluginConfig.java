@@ -3,7 +3,6 @@ package me.wuzzyxy.showmemyrecipes;
 public class PluginConfig {
 
     public PluginConfig(ShowMeMyRecipes plugin) {
-        plugin.saveDefaultConfig();
 
         GUI_NAMESPACE_ID = plugin.getConfig().getString("gui.namespace_id", "_iainternal:blank_menu");
         GUI_TEXTURE_OFFSET = plugin.getConfig().getInt("gui.texture_offset", -8);

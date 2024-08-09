@@ -1,15 +1,30 @@
-
 recipes:
   crafting_table:
     wooden_dagger:
       permission: itemsadder.wooden_dagger
       pattern:
-        - XXX
-        - XRX
-        - XSX
+        - SSS
+        - SRS
+        - SSS
       ingredients:
         R: OAK_PLANKS
         S: STICK
       result:
-        item: daggers:wooden_dagger
+        item: OAK_LOG
+        amount: 1
+    elevator:
+      permission: recipes.elevator
+      pattern:
+        - WWW
+        - WPW
+        - WWW
+      ingredients:
+        W: WHITE_WOOL
+        P: ENDER_PEARL
+      result:
+        item: WHITE_SHULKER_BOX
+        name: "&fElevator"
+        lore:
+          - "&7Teleport to the top"
+          - "&7of the block you're looking at"
         amount: 1

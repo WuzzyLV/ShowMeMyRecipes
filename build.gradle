@@ -18,11 +18,14 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        url "https://repo.oraxen.com/releases"
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
-    compileOnly 'com.github.LoneDev6:API-ItemsAdder:3.6.3-beta-14'
+    compileOnly "io.th0rgal:oraxen:1.179.0"
 
 }
 

@@ -9,6 +9,7 @@ public final class ShowMeMyRecipes extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         config = new PluginConfig(this);
         new AllRecipeCommand(this, new RecipeManager(this));
     }
@@ -21,5 +22,9 @@ public final class ShowMeMyRecipes extends JavaPlugin {
 
     public PluginConfig getPluginConfig() {
         return config;
+    }
+
+    public void reloadPluginConfig() {
+        config = new PluginConfig(this);
     }
 }

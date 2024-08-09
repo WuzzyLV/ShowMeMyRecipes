@@ -1,12 +1,11 @@
 package me.wuzzyxy.showmemyrecipes.inventory;
 
-import dev.lone.itemsadder.api.CustomStack;
-import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
-import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
+import io.th0rgal.oraxen.OraxenPlugin;
 import me.wuzzyxy.showmemyrecipes.PluginConfig;
 import me.wuzzyxy.showmemyrecipes.RecipeManager;
 import me.wuzzyxy.showmemyrecipes.ShowMeMyRecipes;
 import me.wuzzyxy.showmemyrecipes.recipes.CustomRecipe;
+import me.wuzzyxy.showmemyrecipes.utils.ItemUtils;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -30,7 +29,6 @@ public class RecipeView implements Listener {
     private final PluginConfig config;
     private final RecipeManager recipeManager;
     private Inventory inv;
-    private TexturedInventoryWrapper wrapper;
     private final List<String> availableItems;
     private int currentItem = 0;
 
@@ -72,7 +70,7 @@ public class RecipeView implements Listener {
     }
 
     public void openInventory(Player player) {
-        wrapper.showInventory(player);
+        player.openInventory(inv);
     }
 
     private void displayItem(int index) {
@@ -92,17 +90,32 @@ public class RecipeView implements Listener {
     }
 
     public void initInv(){
-        wrapper = new TexturedInventoryWrapper(null,
-                config.GUI_INV_SIZE,
-                ChatColor.translateAlternateColorCodes('&', config.GUI_TITLE),
-                new FontImageWrapper(config.GUI_NAMESPACE_ID),
-                config.GUI_TITLE_OFFSET,
-                config.GUI_TEXTURE_OFFSET
-        );
-        inv = wrapper.getInternal();
+//        wrapper = new TexturedInventoryWrapper(null,
+//                config.GUI_INV_SIZE,
+//                ChatColor.translateAlternateColorCodes('&', config.GUI_TITLE),
+//                new FontImageWrapper(config.GUI_NAMESPACE_ID),
+//                config.GUI_TITLE_OFFSET,
+//                config.GUI_TEXTURE_OFFSET
+//        );
+//        inv = wrapper.getInternal();
+//
+//        inv.setItem(config.GUI_LEFT_ARROW_SLOT, CustomStack.getInstance(config.GUI_LEFT_ARROW).getItemStack());
+//        inv.setItem(config.GUI_RIGHT_ARROW_SLOT, CustomStack.getInstance(config.GUI_RIGHT_ARROW).getItemStack());
+//        inv.setItem(config.GUI_CLOSE_SLOT, CustomStack.getInstance(config.GUI_CLOSE_TEXTURE).getItemStack());
 
-        inv.setItem(config.GUI_LEFT_ARROW_SLOT, CustomStack.getInstance(config.GUI_LEFT_ARROW).getItemStack());
-        inv.setItem(config.GUI_RIGHT_ARROW_SLOT, CustomStack.getInstance(config.GUI_RIGHT_ARROW).getItemStack());
-        inv.setItem(config.GUI_CLOSE_SLOT, CustomStack.getInstance(config.GUI_CLOSE_TEXTURE).getItemStack());
+        String character = OraxenPlugin.get().getFontManager().getGlyphFromID(config.GUI_NAMESPACE_ID).getCharacter();
+        var title = config.GUI_TITLE+"&f<shift:"+config.GUI_TEXTURE_OFFSET+">"+character;
+
+        inv = Bukkit.createInventory(
+                null,
+                config.GUI_INV_SIZE,
+                ChatColor.translateAlternateColorCodes(
+                        '&',
+                        title
+                )
+        );
+        inv.setItem(config.GUI_LEFT_ARROW_SLOT, ItemUtils.getItemByName(config.GUI_LEFT_ARROW));
+        inv.setItem(config.GUI_RIGHT_ARROW_SLOT, ItemUtils.getItemByName(config.GUI_RIGHT_ARROW));
+        inv.setItem(config.GUI_CLOSE_SLOT, ItemUtils.getItemByName(config.GUI_CLOSE_TEXTURE));
     }
 }
